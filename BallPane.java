@@ -40,5 +40,66 @@ public class BallPane extends Pane {
     	animation.play(); // Start animation
   	}
 
+  	public void play() {
+    	animation.play();
+  	}
+
+  	public void pause() {
+    	animation.pause();
+  	}
+
+  	public void increaseSpeed() {
+    	animation.setRate(animation.getRate() + 0.1);
+  	}
+
+  	public void decreaseSpeed() {
+    	animation.setRate(
+      	animation.getRate() > 0 ? animation.getRate() - 0.1 : 0);
+  	}
+
+  	public DoubleProperty rateProperty() {
+    	return animation.rateProperty();
+  	}
+  
+  	protected void moveBall() {
+    	// Check boundaries
+    	// Change ball move direction and ball color when touch the wall
+    	if (x1 < radius || x1 > getWidth() - radius) {
+      		dx1 *= -1; 
+	      	circle1.setFill(new Color((red.nextInt(10) + 1) * 0.1, (green.nextInt(10) + 1) * 0.1, (blue.nextInt(10) + 1) * 0.1, 1));
+    	}
+    	if (y1 < radius || y1 > getHeight() - radius) {
+    	  	dy1 *= -1;
+      		circle1.setFill(new Color((red.nextInt(10) + 1) * 0.1, (green.nextInt(10) + 1) * 0.1, (blue.nextInt(10) + 1) * 0.1, 1)); // Set ball color
+    	}
+   	 	if (x2 < radius || x2 > getWidth() - radius) {
+	      	dx2 *= -1;
+    	  	circle2.setFill(new Color((red.nextInt(10) + 1) * 0.1, (green.nextInt(10) + 1) * 0.1, (blue.nextInt(10) + 1) * 0.1, 1));
+    	}
+	    if (y2 < radius || y2 > getHeight() - radius) {
+    	  	dy2 *= -1;
+      		circle2.setFill(new Color((red.nextInt(10) + 1) * 0.1, (green.nextInt(10) + 1) * 0.1, (blue.nextInt(10) + 1) * 0.1, 1));
+    	}
+
+    //calculate the distance of the two balls
+    //then determine whether they touch
+    double dox = Math.abs(x2 - x1);
+  	double doy = Math.abs(y2 - y1);
+  	int s = (int)Math.hypot(dox, doy);
+  	if(s <= 2 * radius){
+  		dx1 *= -1;
+    	dx2 *= -1;
+    	dy2 *= -1;
+  	}
+	
+    // Adjust ball position
+    x1 += dx1;
+    y1 += dy1;
+    x2 += dx2;
+    y2 += dy2;
+    circle1.setCenterX(x1);
+    circle1.setCenterY(y1);
+    circle2.setCenterX(x2);
+    circle2.setCenterY(y2);
   }
 }
